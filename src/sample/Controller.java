@@ -32,10 +32,7 @@ public class Controller {
    * itemType, and Combobox named selectionChooseQuantity.
    */
   public void initialize() {
-    itemType.getItems().add("Audio");
-    itemType.getItems().add("Visual");
-    itemType.getItems().add("AudioMobile");
-    itemType.getItems().add("VisualMobile");
+    itemType.getItems().addAll("Audio","Visual","AudioMobile","VisualMobile");
     ObservableList<Integer> numbers =
         FXCollections.observableArrayList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
     selectionChooseQuantity.getItems().addAll(numbers);
