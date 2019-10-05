@@ -10,5 +10,4 @@ public interface Item {
   public void setManufacturer(String manufacturer);
 
   public String getManufacturer();
-
 }
