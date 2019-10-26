@@ -10,7 +10,10 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 /**
  * @author Jose Silvestre-Bautista
@@ -20,13 +23,16 @@ public class Controller {
 
   /** The productName is used to receive text from the user. */
   @FXML private TextField productName;
-
   /** The manufacturer is used to receive text from user */
   @FXML private TextField manufacturer;
   /** The itemType allows the user to choose from four possible itemType choices */
   @FXML private ChoiceBox<String> itemType;
   /** The selectionChooseQuantity allows the user to choose from 1 to 10 of certain product. */
   @FXML private ComboBox<Integer> selectionChooseQuantity;
+
+  @FXML private TableView viewProducts;
+
+  @FXML TableColumn productNameTableView;
 
   /**
    * This method initializes text in TextFields named manufacturer and productName, ChoiceBox named
@@ -41,6 +47,8 @@ public class Controller {
     selectionChooseQuantity.setEditable(true);
     selectionChooseQuantity.setValue(5);
     System.out.print("Stuff was initialized.");
+
+    productNameTableView.setCellFactory(new PropertyValueFactory<>("NAME"));
 
     AudioPlayer newAudioProduct =
         new AudioPlayer(
@@ -66,21 +74,22 @@ public class Controller {
    * into a database.
    */
   public void addProduct() {
+    String inputFromProductName = productName.getText();
+    String inputFromManufacturer = manufacturer.getText();
+    String inputFromItemType = itemType.getValue();
+
     /*
      inputFromProductName sets text from productName to a sting.
      inputFromManufacturer sets text from manufacturer to a sting.
      inputFromItemType sets text from itemType to a sting.
     */
-    String inputFromProductName = productName.getText();
-    String inputFromManufacturer = manufacturer.getText();
-    String inputFromItemType = itemType.getValue();
 
-    final String JDBC_DRIVER = "org.h2.Driver";
-    final String DB_URL = "jdbc:h2:./res/ProductionRecord";
+    String JDBC_DRIVER = "org.h2.Driver";
+    String DB_URL = "jdbc:h2:./res/ProductionRecord";
 
     //  Database credentials
-    final String USER = "";
-    final String PASS = "";
+    String USER = "";
+    String PASS = "";
     Connection conn;
     Statement stmt;
 

@@ -12,22 +12,22 @@
 }
 
 .choice-box {
-  -fx-background-color: antiquewhite;
+  /*-fx-background-color: antiquewhite;*/
 }
 
 .text-field {
-  -fx-background-color: antiquewhite;
+  /*-fx-background-color: antiquewhite;*/
 }
 
 .table-view {
-  -fx-background-color: antiquewhite;
+  /*-fx-background-color: antiquewhite;*/
 }
 
 .list-view {
-  -fx-background-color: antiquewhite;
+  /*-fx-background-color: antiquewhite;*/
 }
 
 .button {
-  -fx-background-color: antiquewhite;
+  /*-fx-background-color: antiquewhite;*/
   -fx-border-color: lightgray;
 }

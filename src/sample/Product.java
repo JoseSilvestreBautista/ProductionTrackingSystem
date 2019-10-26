@@ -3,11 +3,11 @@ package sample;
 public abstract class Product implements Item {
 
   int id;
-  String type;
+  ItemType type;
   String manufacturer;
   String name;
 
-  Product(String name, String manufacturer, String type) {
+  Product(String name, String manufacturer, ItemType type) {
     this.name = name;
     this.manufacturer = manufacturer;
     this.type = type;
