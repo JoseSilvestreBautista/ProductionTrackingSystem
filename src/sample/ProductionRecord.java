@@ -2,6 +2,11 @@ package sample;
 
 import java.util.Date;
 
+/**
+ * Creates a serial number and id for products once created.
+ *
+ * @author Jose Silvestre
+ */
 public class ProductionRecord {
 
   private int productionNumber;

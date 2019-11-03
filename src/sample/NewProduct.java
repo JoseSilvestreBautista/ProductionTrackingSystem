@@ -1,9 +1,17 @@
 package sample;
 
+/**
+ * Describes the basic info of a product: name, manufacturer, and Item type and places it into the
+ * table view.
+ *
+ * @author Jose Silvestre-Bautista *
+ */
 class NewProduct {
-
+  /** Holds the product name. */
   private String product_Name;
+  /** Holds the product manufacturer name. */
   private String product_Manufacturer;
+  /** Holds the product item type. */
   private String product_Type;
 
   NewProduct(String product_Name, String product_Manufacturer, String product_Type) {

@@ -1,16 +1,24 @@
 package sample;
 
+/**
+ * Describes the basic info of a screen: refresh rate, resolution, and response rate.
+ *
+ * @author Jose Silvestre
+ */
 public class Screen implements ScreenSpec {
 
-   private final String resolution;
-   private final int refreshRate;
-   private final int responseTime;
+  /** Describes the pixel detail of a display. */
+  private final String resolution;
+  /** The speed a which a displays refreshes usually in hertz. */
+  private final int refreshRate;
+  /** Screen response to an event. */
+  private final int responseTime;
 
-   public Screen(String resolution, int refreshRate, int responseTime){
-     this.resolution=resolution;
-     this.refreshRate=refreshRate;
-     this.responseTime=responseTime;
-   }
+  public Screen(String resolution, int refreshRate, int responseTime) {
+    this.resolution = resolution;
+    this.refreshRate = refreshRate;
+    this.responseTime = responseTime;
+  }
 
   @Override
   public String getResolution() {
@@ -28,7 +36,8 @@ public class Screen implements ScreenSpec {
   }
 
   public String toString() {
-    return "\n"+"Resolution: "
+    return "\n"
+        + "Resolution: "
         + resolution
         + "\n"
         + "Refresh rate: "

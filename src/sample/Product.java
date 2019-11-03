@@ -1,11 +1,16 @@
 package sample;
 
+/**
+ * The basic skeleton of product info: name, item type, and manufacturer
+ *
+ * @author Jose Silvestre-Bautista
+ */
 public abstract class Product implements Item {
 
-      int id;
-      ItemType type;
-      String manufacturer;
-      String name;
+  int id;
+  ItemType type;
+  String manufacturer;
+  String name;
 
   Product(String name, String manufacturer, ItemType type) {
     this.name = name;
@@ -13,26 +18,23 @@ public abstract class Product implements Item {
     this.type = type;
   }
 
-  public int getId(){
+  public int getId() {
     return id;
   }
 
-  public void setName(String name){
+  public void setName(String name) {}
 
-  }
-
-  public String getName(){
+  public String getName() {
     return name;
   }
 
- public void setManufacturer(String manufacturer){
-    this.manufacturer=manufacturer;
+  public void setManufacturer(String manufacturer) {
+    this.manufacturer = manufacturer;
   }
 
-  public String getManufacturer(){
+  public String getManufacturer() {
     return manufacturer;
   }
-
 
   public String toString() {
     return "Name: " + name + "\n" + "Manufacturer: " + manufacturer + "\n" + "Type: " + type;

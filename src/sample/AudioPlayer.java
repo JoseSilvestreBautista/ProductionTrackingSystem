@@ -1,8 +1,15 @@
 package sample;
 
+/**
+ * Sets and describes the multimedia accepted
+ *
+ * @author Jose Silvestre-Bautista
+ */
 public class AudioPlayer extends Product implements MultimediaControl {
 
+  /** Describes the supported audio formats. */
   private final String audioSpecification;
+  /** Describes the supported playlist formats. */
   private final String mediaType;
 
   AudioPlayer(String name, String manufacturer, String audioSpecification, String mediaType) {
@@ -11,6 +18,11 @@ public class AudioPlayer extends Product implements MultimediaControl {
     this.mediaType = mediaType;
   }
 
+  /**
+   * This formulates details of the media device into a string.
+   *
+   * @return audioSpecification, mediaType, super.toString()
+   */
   public String toString() {
     return super.toString()
         + "\n"

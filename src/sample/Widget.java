@@ -1,7 +1,11 @@
 package sample;
 
+/**
+ * This is class to test the creation of serial codes for products.
+ *
+ * @author Jose Silvestre
+ */
 public class Widget extends Product {
-
 
   Widget(String name, String manufacturer, ItemType type) {
     super(name, manufacturer, type);
@@ -13,9 +17,7 @@ public class Widget extends Product {
   }
 
   @Override
-  public void setName(String name) {
-
-  }
+  public void setName(String name) {}
 
   @Override
   public String getName() {
@@ -23,9 +25,7 @@ public class Widget extends Product {
   }
 
   @Override
-  public void setManufacturer(String manufacturer) {
-
-  }
+  public void setManufacturer(String manufacturer) {}
 
   @Override
   public String getManufacturer() {

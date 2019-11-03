@@ -27,17 +27,17 @@ public class Controller {
   @FXML private ChoiceBox<String> itemType;
   /** The selectionChooseQuantity allows the user to choose from 1 to 10 of certain product. */
   @FXML private ComboBox<Integer> selectionChooseQuantity;
-
+  /** The table that contains all products. */
   @FXML private TableView<NewProduct> productLineTable;
-
+  /** Holds the product id number. */
   @FXML private TableColumn idColumn;
-
+  /** Holds the name of the product. */
   @FXML private TableColumn<String, String> nameColumn;
-
+  /** Holds the item type of the product. */
   @FXML private TableColumn<?, ?> typeColumn;
-
+  /** Holds the manufacturer name of the product. */
   @FXML private TableColumn<?, ?> manufacturerColumn;
-
+  /** Displays all products available */
   @FXML private ListView chooseProductListView;
 
   /**
@@ -57,13 +57,14 @@ public class Controller {
     testMultimedia();
   }
 
-
-  public static void testMultimedia() {
-    AudioPlayer newAudioProduct = new AudioPlayer("DP-X1A", "Onkyo",
-        "DSD/FLAC/ALAC/WAV/AIFF/MQA/Ogg-Vorbis/MP3/AAC", "M3U/PLS/WPL");
+  /** This is a method that tests the class Multimedia. */
+  private static void testMultimedia() {
+    AudioPlayer newAudioProduct =
+        new AudioPlayer(
+            "DP-X1A", "Onkyo", "DSD/FLAC/ALAC/WAV/AIFF/MQA/Ogg-Vorbis/MP3/AAC", "M3U/PLS/WPL");
     Screen newScreen = new Screen("720x480", 40, 22);
-    MoviePlayer newMovieProduct = new MoviePlayer("DBPOWER MK101", "OracleProduction", newScreen,
-        MonitorType.LCD);
+    MoviePlayer newMovieProduct =
+        new MoviePlayer("DBPOWER MK101", "OracleProduction", newScreen, MonitorType.LCD);
     ArrayList<MultimediaControl> productList = new ArrayList<>();
     productList.add(newAudioProduct);
     productList.add(newMovieProduct);

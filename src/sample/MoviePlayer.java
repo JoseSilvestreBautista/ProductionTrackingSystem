@@ -1,8 +1,15 @@
 package sample;
 
+/**
+ * Formulates a string that describes the monitor and screen details of a device.
+ *
+ * @author Jose Silvestre-Bautista *
+ */
 public class MoviePlayer extends Product implements MultimediaControl {
 
+  /** The details of the screen such as refresh rate, resolution, and response time. */
   private final Screen screen;
+  /** Describes the two possible displays LCD or LED. */
   private final MonitorType monitorType;
 
   MoviePlayer(String name, String manufacturer, Screen screen, MonitorType monitorType) {
