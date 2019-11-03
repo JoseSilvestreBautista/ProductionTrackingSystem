@@ -1,11 +1,11 @@
 package sample;
 
-public interface MultimediaControl {
-  public void play();
+interface MultimediaControl {
+  void play();
 
-  public void stop();
+  void stop();
 
-  public void previous();
+  void previous();
 
-  public void next();
+  void next();
 }

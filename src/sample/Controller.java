@@ -10,15 +10,13 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-/**
- * @author Jose Silvestre-Bautista
- * @bug None known at time.
- */
+/** @author Jose Silvestre-Bautista */
 public class Controller {
 
   /** The productName is used to receive text from the user. */
@@ -30,9 +28,17 @@ public class Controller {
   /** The selectionChooseQuantity allows the user to choose from 1 to 10 of certain product. */
   @FXML private ComboBox<Integer> selectionChooseQuantity;
 
-  @FXML private TableView viewProducts;
+  @FXML private TableView<NewProduct> productLineTable;
 
-  @FXML TableColumn productNameTableView;
+  @FXML private TableColumn idColumn;
+
+  @FXML private TableColumn<String, String> nameColumn;
+
+  @FXML private TableColumn<?, ?> typeColumn;
+
+  @FXML private TableColumn<?, ?> manufacturerColumn;
+
+  @FXML private ListView chooseProductListView;
 
   /**
    * This method initializes text in TextFields named manufacturer and productName, ChoiceBox named
@@ -46,17 +52,19 @@ public class Controller {
     selectionChooseQuantity.getSelectionModel().selectFirst();
     selectionChooseQuantity.setEditable(true);
     selectionChooseQuantity.setValue(5);
-    System.out.print("Stuff was initialized.");
 
-    productNameTableView.setCellFactory(new PropertyValueFactory<>("NAME"));
+    chooseProductListView.getItems();
+    testMultimedia();
+  }
 
-    AudioPlayer newAudioProduct =
-        new AudioPlayer(
-            "DP-X1A", "Onkyo", "DSD/FLAC/ALAC/WAV/AIFF/MQA/Ogg-Vorbis/MP3/AAC", "M3U/PLS/WPL");
+
+  public static void testMultimedia() {
+    AudioPlayer newAudioProduct = new AudioPlayer("DP-X1A", "Onkyo",
+        "DSD/FLAC/ALAC/WAV/AIFF/MQA/Ogg-Vorbis/MP3/AAC", "M3U/PLS/WPL");
     Screen newScreen = new Screen("720x480", 40, 22);
-    MoviePlayer newMovieProduct =
-        new MoviePlayer("DBPOWER MK101", "OracleProduction", newScreen, MonitorType.LCD);
-    ArrayList<MultimediaControl> productList = new ArrayList<MultimediaControl>();
+    MoviePlayer newMovieProduct = new MoviePlayer("DBPOWER MK101", "OracleProduction", newScreen,
+        MonitorType.LCD);
+    ArrayList<MultimediaControl> productList = new ArrayList<>();
     productList.add(newAudioProduct);
     productList.add(newMovieProduct);
     for (MultimediaControl p : productList) {
@@ -74,15 +82,23 @@ public class Controller {
    * into a database.
    */
   public void addProduct() {
-    String inputFromProductName = productName.getText();
-    String inputFromManufacturer = manufacturer.getText();
-    String inputFromItemType = itemType.getValue();
-
     /*
      inputFromProductName sets text from productName to a sting.
      inputFromManufacturer sets text from manufacturer to a sting.
      inputFromItemType sets text from itemType to a sting.
     */
+    String inputFromProductName = productName.getText();
+    String inputFromManufacturer = manufacturer.getText();
+    String inputFromItemType = itemType.getValue();
+
+    // populate the Table view when the addProduct button is clicked
+    ObservableList<NewProduct> productLine = FXCollections.observableArrayList();
+
+    nameColumn.setCellValueFactory(new PropertyValueFactory("product_Name"));
+    manufacturerColumn.setCellValueFactory(new PropertyValueFactory("product_Manufacturer"));
+    typeColumn.setCellValueFactory(new PropertyValueFactory("product_Type"));
+    productLine.add(new NewProduct(inputFromProductName, inputFromManufacturer, inputFromItemType));
+    productLineTable.setItems(productLine);
 
     String JDBC_DRIVER = "org.h2.Driver";
     String DB_URL = "jdbc:h2:./res/ProductionRecord";

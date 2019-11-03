@@ -1,7 +1,5 @@
 package sample;
 
-import javax.naming.Name;
-
 public class Widget extends Product {
 
 

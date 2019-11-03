@@ -2,8 +2,8 @@ package sample;
 
 public class MoviePlayer extends Product implements MultimediaControl {
 
-  Screen screen;
-  MonitorType monitorType;
+  private final Screen screen;
+  private final MonitorType monitorType;
 
   MoviePlayer(String name, String manufacturer, Screen screen, MonitorType monitorType) {
     super(name, manufacturer, ItemType.VISUAL);

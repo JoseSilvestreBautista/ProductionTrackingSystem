@@ -2,9 +2,9 @@ package sample;
 
 public class Screen implements ScreenSpec {
 
-   String resolution;
-   int refreshRate;
-   int responseTime;
+   private final String resolution;
+   private final int refreshRate;
+   private final int responseTime;
 
    public Screen(String resolution, int refreshRate, int responseTime){
      this.resolution=resolution;
