@@ -102,7 +102,7 @@ public class Controller {
     productLineTable.setItems(productLine);
 
     String JDBC_DRIVER = "org.h2.Driver";
-    String DB_URL = "jdbc:h2:./res/ProductionRecord";
+    String DB_URL = "jdbc:h2:./res/ProductionTables";
 
     //  Database credentials
     String USER = "";

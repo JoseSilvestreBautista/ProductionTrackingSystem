@@ -6,7 +6,7 @@ package sample;
  *
  * @author Jose Silvestre-Bautista *
  */
-class NewProduct {
+public class NewProduct {
   /** Holds the product name. */
   private String product_Name;
   /** Holds the product manufacturer name. */

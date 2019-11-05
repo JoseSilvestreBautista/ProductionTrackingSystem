@@ -5,7 +5,7 @@ package sample;
  *
  * @author Jose Silvestre-Bautista *
  */
-interface MultimediaControl {
+public interface MultimediaControl {
   void play();
 
   void stop();

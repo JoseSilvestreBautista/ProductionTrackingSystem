@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="ProductionRecord" uuid="3413c87a-e31c-4dd4-82d9-a712333f15fc">
+    <data-source source="LOCAL" name="ProductionTables" uuid="e5b3d849-ce4f-48f0-8c67-2d30c80973cc">
       <driver-ref>h2.unified</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.h2.Driver</jdbc-driver>
-      <jdbc-url>jdbc:h2:$PROJECT_DIR$/res/ProductionRecord</jdbc-url>
+      <jdbc-url>jdbc:h2:$PROJECT_DIR$/res/ProductionTables</jdbc-url>
     </data-source>
   </component>
 </project>

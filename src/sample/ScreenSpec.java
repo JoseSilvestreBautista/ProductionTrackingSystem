@@ -5,7 +5,7 @@ package sample;
  *
  * @author Jose Silvestre
  */
-interface ScreenSpec {
+public interface ScreenSpec {
 
   String getResolution();
 
