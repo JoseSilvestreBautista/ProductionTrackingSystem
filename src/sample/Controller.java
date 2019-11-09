@@ -1,10 +1,14 @@
 package sample;
 
+import java.lang.reflect.Array;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -15,6 +19,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 
 /** @author Jose Silvestre-Bautista */
 public class Controller {
@@ -37,24 +42,103 @@ public class Controller {
   @FXML private TableColumn<?, ?> typeColumn;
   /** Holds the manufacturer name of the product. */
   @FXML private TableColumn<?, ?> manufacturerColumn;
-  /** Displays all products available */
+  /** Displays all products available to be chosen */
   @FXML private ListView chooseProductListView;
+  /** Displays all products available */
+  private ObservableList<NewProduct> productLine = FXCollections.observableArrayList();
+  /** Database Connection */
+  private String JDBC_DRIVER = "org.h2.Driver";
+  /** Database location */
+  private String DB_URL = "jdbc:h2:./res/ProductionTables";
+  //  Database credentials
+  private String USER = "";
+  private String PASS = "";
+  private Connection conn;
+  private Statement stmt;
+  /** Row info from list view */
+  String infoFromListView;
 
   /**
    * This method initializes text in TextFields named manufacturer and productName, ChoiceBox named
    * itemType, and Combobox named selectionChooseQuantity.
    */
   public void initialize() {
+    populateItemTypeChoiceBox();
+    populateChooseQuantityChoiceBox();
+    testMultimedia();
+    loadProductsToProductLine();
+    populateExistingProductsTableView();
+  }
+
+  public void populateExistingProductsTableView() {
+    idColumn.setCellValueFactory(new PropertyValueFactory<>("product_ID"));
+    nameColumn.setCellValueFactory(new PropertyValueFactory<>("product_Name"));
+    manufacturerColumn.setCellValueFactory(new PropertyValueFactory<>("product_Manufacturer"));
+    typeColumn.setCellValueFactory(new PropertyValueFactory<>("product_Type"));
+    productLineTable.setItems(productLine);
+  }
+
+  public void populateItemTypeChoiceBox() {
     itemType.getItems().addAll("Audio", "Visual", "AudioMobile", "VisualMobile");
+  }
+
+  public void populateChooseQuantityChoiceBox() {
     ObservableList<Integer> numbers =
         FXCollections.observableArrayList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
     selectionChooseQuantity.getItems().addAll(numbers);
     selectionChooseQuantity.getSelectionModel().selectFirst();
     selectionChooseQuantity.setEditable(true);
     selectionChooseQuantity.setValue(5);
+  }
 
-    chooseProductListView.getItems();
-    testMultimedia();
+  public void loadProductsToProductLine() {
+    try {
+      // STEP 1: Register JDBC driver
+      Class.forName(JDBC_DRIVER);
+
+      // STEP 2: Open a connection
+      conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+      // STEP 3: Execute a query
+      stmt = conn.createStatement();
+      // INSERT INTO Product(type, manufacturer, name) VALUES ( 'AUDIO', 'Apple', 'iPod' );
+      String sql = "SELECT id, name, type, manufacturer FROM PRODUCT;";
+      System.out.println(sql);
+
+      productLine.clear();
+      chooseProductListView.getItems().clear();
+
+      ResultSet rs = stmt.executeQuery(sql);
+      while (rs.next()) {
+        String localVariableForProductID = rs.getString(1);
+        String localVariableForProductName = rs.getString(2);
+        String localVariableForProductManufacturer = rs.getString(3);
+        String localVariableForProductType = rs.getString(4);
+        NewProduct formdbProduct =
+            new NewProduct(
+                localVariableForProductID,
+                localVariableForProductName,
+                localVariableForProductManufacturer,
+                localVariableForProductType);
+        productLine.add(formdbProduct);
+        chooseProductListView
+            .getItems()
+            .add(
+                localVariableForProductID
+                    + "\t"
+                    + localVariableForProductName
+                    + "\t"
+                    + localVariableForProductManufacturer
+                    + "\t"
+                    + localVariableForProductType);
+      }
+
+      // STEP 4: Clean-up environment
+      stmt.close();
+      conn.close();
+    } catch (ClassNotFoundException | SQLException e) {
+      e.printStackTrace();
+    }
   }
 
   /** This is a method that tests the class Multimedia. */
@@ -93,22 +177,6 @@ public class Controller {
     String inputFromItemType = itemType.getValue();
 
     // populate the Table view when the addProduct button is clicked
-    ObservableList<NewProduct> productLine = FXCollections.observableArrayList();
-
-    nameColumn.setCellValueFactory(new PropertyValueFactory("product_Name"));
-    manufacturerColumn.setCellValueFactory(new PropertyValueFactory("product_Manufacturer"));
-    typeColumn.setCellValueFactory(new PropertyValueFactory("product_Type"));
-    productLine.add(new NewProduct(inputFromProductName, inputFromManufacturer, inputFromItemType));
-    productLineTable.setItems(productLine);
-
-    String JDBC_DRIVER = "org.h2.Driver";
-    String DB_URL = "jdbc:h2:./res/ProductionTables";
-
-    //  Database credentials
-    String USER = "";
-    String PASS = "";
-    Connection conn;
-    Statement stmt;
 
     try {
       // STEP 1: Register JDBC driver
@@ -137,10 +205,17 @@ public class Controller {
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
     }
+    loadProductsToProductLine();
   }
 
   /** In the future this method will show production records. */
   public void recordProduction() {
+
     System.out.println("This is the Record Production!");
+  }
+  /** Reads the selected row from the ListView */
+  public void listViewProduct(MouseEvent mouseEvent) {
+    System.out.println(chooseProductListView.getSelectionModel().getSelectedItems());
+    infoFromListView = chooseProductListView.getSelectionModel().getSelectedItems().toString();
   }
 }

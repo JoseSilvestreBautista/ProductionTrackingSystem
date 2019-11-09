@@ -14,10 +14,22 @@ public class NewProduct {
   /** Holds the product item type. */
   private String product_Type;
 
-  NewProduct(String product_Name, String product_Manufacturer, String product_Type) {
+  private String product_ID;
+
+  NewProduct(
+      String product_ID, String product_Name, String product_Manufacturer, String product_Type) {
+    this.product_ID = product_ID;
     this.product_Name = product_Name;
     this.product_Manufacturer = product_Manufacturer;
     this.product_Type = product_Type;
+  }
+
+  public String getProduct_ID() {
+    return product_ID;
+  }
+
+  public void setProduct_ID(String product_ID) {
+    this.product_ID = product_ID;
   }
 
   public String getProduct_Name() {
