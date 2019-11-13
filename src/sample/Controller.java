@@ -1,5 +1,6 @@
 package sample;
 
+import java.awt.SystemTray;
 import java.lang.reflect.Array;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -56,8 +57,11 @@ public class Controller {
   private Connection conn;
   private Statement stmt;
   /** Row info from list view */
-  String infoFromListView;
+  private String infoFromListView;
 
+  Product produceProduct;
+
+  private String[] theInfo;
   /**
    * This method initializes text in TextFields named manufacturer and productName, ChoiceBox named
    * itemType, and Combobox named selectionChooseQuantity.
@@ -83,8 +87,7 @@ public class Controller {
   }
 
   public void populateChooseQuantityChoiceBox() {
-    ObservableList<Integer> numbers =
-        FXCollections.observableArrayList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+    ObservableList<Integer> numbers = FXCollections.observableArrayList(1, 2, 3, 4, 5, 6, 7);
     selectionChooseQuantity.getItems().addAll(numbers);
     selectionChooseQuantity.getSelectionModel().selectFirst();
     selectionChooseQuantity.setEditable(true);
@@ -208,14 +211,87 @@ public class Controller {
     loadProductsToProductLine();
   }
 
-  /** In the future this method will show production records. */
-  public void recordProduction() {
-
-    System.out.println("This is the Record Production!");
-  }
   /** Reads the selected row from the ListView */
   public void listViewProduct(MouseEvent mouseEvent) {
     System.out.println(chooseProductListView.getSelectionModel().getSelectedItems());
     infoFromListView = chooseProductListView.getSelectionModel().getSelectedItems().toString();
+    theInfo = infoFromListView.split("\\t");
+    System.out.println(theInfo[0]);
+    System.out.println(theInfo[1]);
+    System.out.println(theInfo[2]);
+    System.out.println(theInfo[3]);
+    loadProductionLog();
+  }
+
+  public void loadProductionLog() {
+    //    itemType.getItems().addAll("Audio", "Visual", "AudioMobile", "VisualMobile");
+    String twoLetterTypeCode = null;
+
+    switch (theInfo[2].trim()) {
+      case ("Audio"):
+        twoLetterTypeCode = "AU";
+        break;
+      case ("Visual"):
+        twoLetterTypeCode = "VI";
+        break;
+      case ("AudioMobile"):
+        twoLetterTypeCode = "AM";
+        break;
+      case ("VisualMobile"):
+        twoLetterTypeCode = "VM";
+        break;
+      default:
+        System.out.println("Something freaky happened in the loadProductionLog method.");
+    }
+
+    produceProduct =
+        new Product(theInfo[1].trim(), theInfo[3].replace("]", "").trim(), twoLetterTypeCode) {
+          @Override
+          public int getId() {
+            return super.getId();
+          }
+
+          @Override
+          public void setName(String name) {
+            super.setName(name);
+          }
+
+          @Override
+          public String getName() {
+            return super.getName();
+          }
+
+          @Override
+          public void setManufacturer(String manufacturer) {
+            super.setManufacturer(manufacturer);
+          }
+
+          @Override
+          public String getManufacturer() {
+            return super.getManufacturer();
+          }
+
+          @Override
+          public String toString() {
+            return super.toString();
+          }
+        };
+
+    System.out.println(produceProduct);
+  }
+  /** In the future this method will show production records. */
+  public void recordProduction() {
+    int simplified =
+        Integer.parseInt(
+            String.valueOf(selectionChooseQuantity.getSelectionModel().getSelectedItem()));
+
+    for (int i = 0; i < simplified; i++) {
+      ProductionRecord createTheSerialNumbersForProducProduct =
+          new ProductionRecord(produceProduct, i);
+
+      System.out.println(createTheSerialNumbersForProducProduct);
+    }
+    //    System.out.println(createTheSerialNumbersForProducProduct);
+    System.out.println("This is the Record Production!");
   }
 }

@@ -32,7 +32,7 @@ public class ProductionRecord {
   public ProductionRecord(Product productProduced, int count) {
     String intFormat = String.format("%010d", count);
     this.serialNum =
-        productProduced.manufacturer.substring(0, 2) + productProduced.type.code + intFormat;
+        productProduced.manufacturer.substring(0, 3) + productProduced.type + intFormat;
     this.dateProduced = new Date();
   }
 

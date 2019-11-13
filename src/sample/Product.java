@@ -8,11 +8,11 @@ package sample;
 public abstract class Product implements Item {
 
   int id;
-  ItemType type;
+  String type;
   String manufacturer;
   String name;
 
-  Product(String name, String manufacturer, ItemType type) {
+  Product(String name, String manufacturer, String type) {
     this.name = name;
     this.manufacturer = manufacturer;
     this.type = type;
