@@ -28,13 +28,20 @@ public class ProductionRecord {
     this.serialNum = serialNumber;
     this.dateProduced = dateProduced;
   }
+
+
+
   // constructor for serial number
   public ProductionRecord(Product productProduced, int count) {
     String intFormat = String.format("%010d", count);
     this.serialNum =
         productProduced.manufacturer.substring(0, 3) + productProduced.type + intFormat;
-    this.dateProduced = new Date();
   }
+
+  public String printSerialNumber(){
+    return serialNum;
+  }
+
 
   public String toString() {
 

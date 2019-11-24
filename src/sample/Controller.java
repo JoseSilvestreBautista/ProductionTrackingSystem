@@ -1,15 +1,14 @@
 package sample;
 
-import java.awt.SystemTray;
-import java.lang.reflect.Array;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import java.util.Arrays;
+import java.util.Date;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -18,6 +17,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
@@ -45,8 +45,10 @@ public class Controller {
   @FXML private TableColumn<?, ?> manufacturerColumn;
   /** Displays all products available to be chosen */
   @FXML private ListView chooseProductListView;
+  @FXML private TextArea ProductionLogTextArea;
   /** Displays all products available */
   private ObservableList<NewProduct> productLine = FXCollections.observableArrayList();
+  private ArrayList<String> allProducts = new ArrayList<>();
   /** Database Connection */
   private String JDBC_DRIVER = "org.h2.Driver";
   /** Database location */
@@ -60,8 +62,7 @@ public class Controller {
   private String infoFromListView;
 
   Product produceProduct;
-
-  private String[] theInfo;
+  private String[] productInfoFromListView;
   /**
    * This method initializes text in TextFields named manufacturer and productName, ChoiceBox named
    * itemType, and Combobox named selectionChooseQuantity.
@@ -69,9 +70,48 @@ public class Controller {
   public void initialize() {
     populateItemTypeChoiceBox();
     populateChooseQuantityChoiceBox();
-    testMultimedia();
     loadProductsToProductLine();
     populateExistingProductsTableView();
+    populateProductionLog();
+  }
+
+  public void populateProductionLog() {
+
+    ProductionLogTextArea.setText("Production Log :\n");
+    try {
+      // STEP 1: Register JDBC driver
+      Class.forName(JDBC_DRIVER);
+
+      // STEP 2: Open a connection
+      conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+      // STEP 3: Execute a query
+      stmt = conn.createStatement();
+      // INSERT INTO Product(type, manufacturer, name) VALUES ( 'AUDIO', 'Apple', 'iPod' );
+      String sql = "SELECT PRODUCTION_NUM, PRODUCT_ID,SERIAL_NUM, DATE_PRODUCED FROM PRODUCTIONRECORD;";
+
+      ResultSet rs = stmt.executeQuery(sql);
+      while (rs.next()) {
+        String localProductionNum = rs.getString(1);
+        String localProductId = rs.getString(2);
+        String localSerialNum = rs.getString(3);
+        String localDateProduced = rs.getString(4);
+        ProductionLogTextArea.appendText("Prod. Num: "
+            + localProductionNum
+            + " Product ID: "
+            + localProductId
+            + " Serial Num: "
+            + localSerialNum
+            + " Date: "
+            + localDateProduced+"\n");
+      }
+      // STEP 4: Clean-up environment
+      stmt.close();
+      conn.close();
+    } catch (ClassNotFoundException | SQLException e) {
+      e.printStackTrace();
+    }
+
   }
 
   public void populateExistingProductsTableView() {
@@ -113,54 +153,42 @@ public class Controller {
 
       ResultSet rs = stmt.executeQuery(sql);
       while (rs.next()) {
-        String localVariableForProductID = rs.getString(1);
-        String localVariableForProductName = rs.getString(2);
-        String localVariableForProductManufacturer = rs.getString(3);
-        String localVariableForProductType = rs.getString(4);
+        allProducts.clear();
+//        String localVariableForProductID = rs.getString(1);
+//        String localVariableForProductName = rs.getString(2);
+//        String localVariableForProductManufacturer = rs.getString(3);
+//        String localVariableForProductType = rs.getString(4);
+        allProducts.add(rs.getString(1));
+        allProducts.add(rs.getString(2));
+        allProducts.add(rs.getString(3));
+        allProducts.add(rs.getString(4));
+
         NewProduct formdbProduct =
             new NewProduct(
-                localVariableForProductID,
-                localVariableForProductName,
-                localVariableForProductManufacturer,
-                localVariableForProductType);
+                allProducts.get(0),
+                allProducts.get(1),
+                allProducts.get(2),
+                allProducts.get(3));
         productLine.add(formdbProduct);
         chooseProductListView
             .getItems()
             .add(
-                localVariableForProductID
+                allProducts.get(0)
                     + "\t"
-                    + localVariableForProductName
+                    + allProducts.get(1)
                     + "\t"
-                    + localVariableForProductManufacturer
+                    + allProducts.get(2)
                     + "\t"
-                    + localVariableForProductType);
+                    + allProducts.get(3));
+        populateProductionLog();
       }
+
 
       // STEP 4: Clean-up environment
       stmt.close();
       conn.close();
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
-    }
-  }
-
-  /** This is a method that tests the class Multimedia. */
-  private static void testMultimedia() {
-    AudioPlayer newAudioProduct =
-        new AudioPlayer(
-            "DP-X1A", "Onkyo", "DSD/FLAC/ALAC/WAV/AIFF/MQA/Ogg-Vorbis/MP3/AAC", "M3U/PLS/WPL");
-    Screen newScreen = new Screen("720x480", 40, 22);
-    MoviePlayer newMovieProduct =
-        new MoviePlayer("DBPOWER MK101", "OracleProduction", newScreen, MonitorType.LCD);
-    ArrayList<MultimediaControl> productList = new ArrayList<>();
-    productList.add(newAudioProduct);
-    productList.add(newMovieProduct);
-    for (MultimediaControl p : productList) {
-      System.out.println(p);
-      p.play();
-      p.stop();
-      p.next();
-      p.previous();
     }
   }
 
@@ -215,11 +243,11 @@ public class Controller {
   public void listViewProduct(MouseEvent mouseEvent) {
     System.out.println(chooseProductListView.getSelectionModel().getSelectedItems());
     infoFromListView = chooseProductListView.getSelectionModel().getSelectedItems().toString();
-    theInfo = infoFromListView.split("\\t");
-    System.out.println(theInfo[0]);
-    System.out.println(theInfo[1]);
-    System.out.println(theInfo[2]);
-    System.out.println(theInfo[3]);
+    productInfoFromListView = infoFromListView.split("\\t");
+    System.out.println(productInfoFromListView[0]);
+    System.out.println(productInfoFromListView[1]);
+    System.out.println(productInfoFromListView[2]);
+    System.out.println(productInfoFromListView[3]);
     loadProductionLog();
   }
 
@@ -227,7 +255,7 @@ public class Controller {
     //    itemType.getItems().addAll("Audio", "Visual", "AudioMobile", "VisualMobile");
     String twoLetterTypeCode = null;
 
-    switch (theInfo[2].trim()) {
+    switch (productInfoFromListView[2].trim()) {
       case ("Audio"):
         twoLetterTypeCode = "AU";
         break;
@@ -245,7 +273,10 @@ public class Controller {
     }
 
     produceProduct =
-        new Product(theInfo[1].trim(), theInfo[3].replace("]", "").trim(), twoLetterTypeCode) {
+        new Product(
+            productInfoFromListView[1].trim(),
+            productInfoFromListView[3].replace("]", "").trim(),
+            twoLetterTypeCode) {
           @Override
           public int getId() {
             return super.getId();
@@ -276,22 +307,69 @@ public class Controller {
             return super.toString();
           }
         };
-
-    System.out.println(produceProduct);
   }
+
   /** In the future this method will show production records. */
   public void recordProduction() {
+
+    int localSerialNum = 0;
+    int prodId = Integer.parseInt(productInfoFromListView[0].replace("[", "").trim());
+
+    //    System.out.println(prodId);
+    try {
+      Class.forName(JDBC_DRIVER);
+      conn = DriverManager.getConnection(DB_URL, USER, PASS);
+      stmt = conn.createStatement();
+
+      String sql = "SELECT SERIAL_NUM from PRODUCTIONRECORD WHERE PRODUCT_ID=' " + prodId + "'";
+
+      ResultSet rs = stmt.executeQuery(sql);
+
+      while (rs.next()) {
+        localSerialNum = Integer.parseInt(rs.getString(1).substring(5, 15));
+        //        System.out.println(localSerialNum);
+      }
+
+      // STEP 4: Clean-up environment
+      stmt.close();
+      conn.close();
+    } catch (ClassNotFoundException | SQLException e) {
+      e.printStackTrace();
+    }
+
     int simplified =
         Integer.parseInt(
             String.valueOf(selectionChooseQuantity.getSelectionModel().getSelectedItem()));
 
-    for (int i = 0; i < simplified; i++) {
-      ProductionRecord createTheSerialNumbersForProducProduct =
+    for (int i = localSerialNum + 1; i <= simplified + localSerialNum; i++) {
+      ProductionRecord createTheSerialNumbersForProduceProduct =
           new ProductionRecord(produceProduct, i);
 
-      System.out.println(createTheSerialNumbersForProducProduct);
+      try {
+        Class.forName(JDBC_DRIVER);
+        conn = DriverManager.getConnection(DB_URL, USER, PASS);
+        stmt = conn.createStatement();
+        Timestamp time = new Timestamp(new Date().getTime());
+
+        String sql =
+            "INSERT INTO PRODUCTIONRECORD(PRODUCT_ID, SERIAL_NUM, DATE_PRODUCED) VALUES ('"
+                + productInfoFromListView[0].replace("[", "").trim()
+                + "', '"
+                + createTheSerialNumbersForProduceProduct.printSerialNumber()
+                + "', '"
+                + time
+                + "')";
+        System.out.println(sql);
+
+        stmt.executeUpdate(sql);
+
+        // STEP 4: Clean-up environment
+        stmt.close();
+        conn.close();
+      } catch (ClassNotFoundException | SQLException e) {
+        e.printStackTrace();
+      }
     }
-    //    System.out.println(createTheSerialNumbersForProducProduct);
-    System.out.println("This is the Record Production!");
+    populateProductionLog();
   }
 }
