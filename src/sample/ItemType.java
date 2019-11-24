@@ -11,7 +11,7 @@ public enum ItemType {
   AUDIO_MOBILE("AM"),
   VISUAL_MOBILE("VM");
 
-  public String code;
+  public final String code;
 
   /**
    * Returns the two letter code of associated to the item type.

@@ -7,10 +7,10 @@ package sample;
  */
 public abstract class Product implements Item {
 
-  int id;
-  String type;
+  private int id;
+  final String type;
   String manufacturer;
-  String name;
+  final String name;
 
   Product(String name, String manufacturer, String type) {
     this.name = name;
