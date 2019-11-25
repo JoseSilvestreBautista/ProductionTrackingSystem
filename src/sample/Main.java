@@ -15,6 +15,8 @@ import javafx.stage.Stage;
  */
 public class Main extends Application {
 
+  private static Stage primaryStage;
+
   /**
    * This method sets the display for written code in the other files.
    *
@@ -22,9 +24,18 @@ public class Main extends Application {
    */
   @Override
   public void start(Stage primaryStage) throws Exception {
-    Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+    setPrimaryStage(primaryStage);
+    Parent root = FXMLLoader.load(getClass().getResource("LoginPage.fxml"));
     primaryStage.setScene(new Scene(root, 640, 480));
     primaryStage.show();
+  }
+
+  private void setPrimaryStage(Stage stage) {
+    Main.primaryStage = stage;
+  }
+
+  public static Stage getPrimaryStage() {
+    return primaryStage;
   }
 
   public static void main(String[] args) {

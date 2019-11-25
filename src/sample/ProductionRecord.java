@@ -1,5 +1,6 @@
 package sample;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -12,17 +13,17 @@ public class ProductionRecord {
   private int productionNumber;
   private int productID;
   private String serialNum;
-  private Date dateProduced;
+  private String dateProduced;
 
   public ProductionRecord(int productID) {
     this.productID = productID;
     this.productionNumber = 0;
     this.serialNum = "0";
-    this.dateProduced = new Date();
+    this.dateProduced = new Date().toString();
   }
 
   public ProductionRecord(
-      int productionNumber, int productID, String serialNumber, Date dateProduced) {
+      int productionNumber, int productID, String serialNumber, String dateProduced) {
     this.productID = productID;
     this.productionNumber = productionNumber;
     this.serialNum = serialNumber;
@@ -76,11 +77,11 @@ public class ProductionRecord {
     this.serialNum = serialNumber;
   }
 
-  public Date getProdDate() {
-    return dateProduced;
-  }
-
-  public void setProdDate(Date dateProduced) {
-    this.dateProduced = dateProduced;
-  }
+//  public Date getProdDate() {
+//    return dateProduced;
+//  }
+//
+//  public void setProdDate(Date dateProduced) {
+//    this.dateProduced = dateProduced;
+//  }
 }

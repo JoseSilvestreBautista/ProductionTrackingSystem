@@ -1,5 +1,6 @@
 package sample;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -10,7 +11,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
@@ -20,6 +25,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 
 /**
  * @author Jose Silvestre-Bautista
@@ -65,6 +71,7 @@ public class Controller {
   /** An object of Product that used to create serial numbers */
   private Product produceProduct;
 
+
   private String[] productInfoFromListView;
   /**
    * This method initializes text in TextFields named manufacturer and productName, ChoiceBox named
@@ -95,21 +102,14 @@ public class Controller {
       String sql =
           "SELECT PRODUCTION_NUM, PRODUCT_ID,SERIAL_NUM, DATE_PRODUCED FROM PRODUCTIONRECORD";
       ResultSet rs = stmt.executeQuery(sql);
+
       while (rs.next()) {
-        String localProductionNum = rs.getString(1);
-        String localProductId = rs.getString(2);
+        int localProductionNum = Integer.parseInt(rs.getString(1));
+        int localProductId = Integer.parseInt(rs.getString(2));
         String localSerialNum = rs.getString(3);
         String localDateProduced = rs.getString(4);
-        ProductionLogTextArea.appendText(
-            "Prod. Num: "
-                + localProductionNum
-                + " Product ID: "
-                + localProductId
-                + " Serial Num: "
-                + localSerialNum
-                + " Date: "
-                + localDateProduced
-                + "\n");
+        ProductionRecord productionRecordToProductionLog = new ProductionRecord(localProductionNum,localProductId,localSerialNum,localDateProduced);
+        ProductionLogTextArea.appendText( productionRecordToProductionLog+"\n");
       }
       // STEP 4: Clean-up environment
       stmt.close();
