@@ -130,7 +130,6 @@ public class Employee {
     return name;
   }
 
-
   // Getter
   public String getEmail() {
     return email;
@@ -143,8 +142,4 @@ public class Employee {
   public String getUsername() {
     return username;
   }
-
-
-
-
 }

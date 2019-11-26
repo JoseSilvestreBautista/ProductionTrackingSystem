@@ -77,11 +77,11 @@ public class ProductionRecord {
     this.serialNum = serialNumber;
   }
 
-//  public Date getProdDate() {
-//    return dateProduced;
-//  }
-//
-//  public void setProdDate(Date dateProduced) {
-//    this.dateProduced = dateProduced;
-//  }
+  //  public Date getProdDate() {
+  //    return dateProduced;
+  //  }
+  //
+  //  public void setProdDate(Date dateProduced) {
+  //    this.dateProduced = dateProduced;
+  //  }
 }

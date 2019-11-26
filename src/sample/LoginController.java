@@ -17,10 +17,18 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+/**
+ * This process the login for the employee.
+ *
+ * @author Jose Silvestre-Bautista
+ */
 public class LoginController {
 
+  /** The text field where the user enters their username. */
   @FXML TextField UsernameBox;
+  /** The text field where the user enters their password. */
   @FXML TextField PasswordBox;
+  /** Tells what type of database is being used. */
   private final String JDBC_DRIVER = "org.h2.Driver";
   /** Database location */
   private final String DB_URL = "jdbc:h2:./res/ProductionTables";
@@ -29,15 +37,27 @@ public class LoginController {
   private final String PASS = "dbpw";
   private Connection conn;
   private Statement stmt;
+  /** Holds the username entered from TextField. */
   private String usernameFromTextBox;
+  /** Holds the password from the TextBox. */
   private String passwordFromTextBox;
+  /** Hold all user names in the data base. */
   private ArrayList<String> usernameList = new ArrayList<>();
+  /** Holds the password associated with username entered by the user. */
   private ArrayList<String> passwordList = new ArrayList<>();
 
+  /** Fills the username array list. */
   public void initialize() {
     getUsernameFromTheDataBase();
   }
 
+  /**
+   * Check of the username and password entered match an existing account and decides whether to
+   * allow the user to enter.
+   *
+   * @param event When user clicks the sign in button.
+   * @throws IOException Unsure of what it does at the moment.
+   */
   public void LoginPressed(ActionEvent event) throws IOException {
 
     Alert emptyTextBox = new Alert(AlertType.ERROR);
@@ -88,6 +108,7 @@ public class LoginController {
     }
   }
 
+  /** Retrieves the password associated with username entered. */
   public void getUsernameFromTheDataBase() {
     try {
       // STEP 1: Register JDBC driver
@@ -109,5 +130,4 @@ public class LoginController {
       e.printStackTrace();
     }
   }
-
 }
