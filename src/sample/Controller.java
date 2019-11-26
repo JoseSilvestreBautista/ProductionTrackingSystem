@@ -17,15 +17,20 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 
 /**
@@ -60,6 +65,8 @@ public class Controller {
   private final ObservableList<NewProduct> productLine = FXCollections.observableArrayList();
   /** Holds all the products in the database. */
   private final ArrayList<String> allProducts = new ArrayList<>();
+  @FXML private TextField EmployeeName;
+  @FXML private PasswordField EmployeePassword;
   /** Database Connection */
   private final String JDBC_DRIVER = "org.h2.Driver";
   /** Database location */
@@ -365,5 +372,21 @@ public class Controller {
       }
     }
     populateProductionLog();
+  }
+
+
+  public void CreateAccountPressed(ActionEvent event) {
+    Alert loginCredentials = new Alert(AlertType.INFORMATION);
+    String name = EmployeeName.getText();
+    String password = EmployeePassword.getText();
+    Employee newEmployeesCredentials = new Employee(name, password);
+    System.out.println(newEmployeesCredentials);
+    loginCredentials.setTitle("Credentials");
+    loginCredentials.setHeaderText("Your Login Credentials");
+    loginCredentials.setContentText(newEmployeesCredentials.toString());
+
+
+//    System.out.println(newEmployeesCredentials);
+
   }
 }

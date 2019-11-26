@@ -110,27 +110,4 @@ public class LoginController {
     }
   }
 
-  //  public void getPasswordFromTheDataBase() {
-  //    usernameFromTextBox = UsernameBox.getText();
-  //    try {
-  //      // STEP 1: Register JDBC driver
-  //      Class.forName(JDBC_DRIVER);
-  //      // STEP 2: Open a connection
-  //      conn = DriverManager.getConnection(DB_URL, USER, PASS);
-  //      // STEP 3: Execute a query
-  //      stmt = conn.createStatement();
-  //      String sql =
-  //          "SELECT LOGINPASSWORD from USERINFO WHERE LOGINUSERNAME ='" + usernameFromTextBox +
-  // "'";
-  //      ResultSet rs = stmt.executeQuery(sql);
-  //      while (rs.next()) {
-  //        passwordList.add(rs.getString(1));
-  //      }
-  //      // STEP 4: Clean-up environment
-  //      stmt.close();
-  //      conn.close();
-  //    } catch (ClassNotFoundException | SQLException e) {
-  //      e.printStackTrace();
-  //    }
-  //  }
 }
