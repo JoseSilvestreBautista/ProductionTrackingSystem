@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
  */
 public class Employee {
 
-  private StringBuilder name;
+  private String name;
   private String username;
   private String password;
   private String email;
@@ -22,7 +22,7 @@ public class Employee {
    * @param password Accepts the password entered by the employee.
    */
   public Employee(String name, String password) {
-    this.name = new StringBuilder(name);
+    this.name = name;
     if (checkName(name)) {
       setUsername(name);
       setEmail(name);
@@ -124,4 +124,27 @@ public class Employee {
         + "Initial Password : "
         + password;
   }
+
+  // Getter
+  public String getName() {
+    return name;
+  }
+
+
+  // Getter
+  public String getEmail() {
+    return email;
+  }
+
+  public String getPassword() {
+    return password;
+  }
+
+  public String getUsername() {
+    return username;
+  }
+
+
+
+
 }

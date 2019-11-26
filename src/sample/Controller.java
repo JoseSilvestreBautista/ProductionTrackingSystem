@@ -65,6 +65,7 @@ public class Controller {
   private final ObservableList<NewProduct> productLine = FXCollections.observableArrayList();
   /** Holds all the products in the database. */
   private final ArrayList<String> allProducts = new ArrayList<>();
+
   @FXML private TextField EmployeeName;
   @FXML private PasswordField EmployeePassword;
   /** Database Connection */
@@ -78,7 +79,6 @@ public class Controller {
   private Statement stmt;
   /** An object of Product that used to create serial numbers */
   private Product produceProduct;
-
 
   private String[] productInfoFromListView;
   /**
@@ -116,8 +116,10 @@ public class Controller {
         int localProductId = Integer.parseInt(rs.getString(2));
         String localSerialNum = rs.getString(3);
         String localDateProduced = rs.getString(4);
-        ProductionRecord productionRecordToProductionLog = new ProductionRecord(localProductionNum,localProductId,localSerialNum,localDateProduced);
-        ProductionLogTextArea.appendText( productionRecordToProductionLog+"\n");
+        ProductionRecord productionRecordToProductionLog =
+            new ProductionRecord(
+                localProductionNum, localProductId, localSerialNum, localDateProduced);
+        ProductionLogTextArea.appendText(productionRecordToProductionLog + "\n");
       }
       // STEP 4: Clean-up environment
       stmt.close();
@@ -374,7 +376,6 @@ public class Controller {
     populateProductionLog();
   }
 
-
   public void CreateAccountPressed(ActionEvent event) {
     Alert loginCredentials = new Alert(AlertType.INFORMATION);
     String name = EmployeeName.getText();
@@ -385,5 +386,29 @@ public class Controller {
     loginCredentials.setContentText(newEmployeesCredentials.toString());
     loginCredentials.show();
 
+    try {
+      Class.forName(JDBC_DRIVER);
+      conn = DriverManager.getConnection(DB_URL, USER, PASS);
+      stmt = conn.createStatement();
+      Timestamp time = new Timestamp(new Date().getTime());
+
+      String sql =
+          "INSERT INTO USERINFO(fullName,companyEmail, loginUsername, loginPassword ) VALUES ('"
+              + newEmployeesCredentials.getName()
+              + "', '"
+              + newEmployeesCredentials.getEmail()
+              + "', '"
+              + newEmployeesCredentials.getUsername()
+              + "', '"
+              + newEmployeesCredentials.getPassword()
+              + "')";
+      stmt.executeUpdate(sql);
+
+      // STEP 4: Clean-up environment
+      stmt.close();
+      conn.close();
+    } catch (ClassNotFoundException | SQLException e) {
+      e.printStackTrace();
+    }
   }
 }
