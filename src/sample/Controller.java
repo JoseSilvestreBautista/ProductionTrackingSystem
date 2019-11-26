@@ -380,13 +380,10 @@ public class Controller {
     String name = EmployeeName.getText();
     String password = EmployeePassword.getText();
     Employee newEmployeesCredentials = new Employee(name, password);
-    System.out.println(newEmployeesCredentials);
     loginCredentials.setTitle("Credentials");
     loginCredentials.setHeaderText("Your Login Credentials");
     loginCredentials.setContentText(newEmployeesCredentials.toString());
-
-
-//    System.out.println(newEmployeesCredentials);
+    loginCredentials.show();
 
   }
 }
