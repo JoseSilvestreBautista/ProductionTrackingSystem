@@ -44,7 +44,6 @@ public class Employee {
    * @param name The name entered by the employee.
    */
   private void setUsername(String name) {
-
     Pattern nameAfterSpace = Pattern.compile("\\s(.*)", Pattern.MULTILINE);
     Matcher nameAfterSpaceMatch = nameAfterSpace.matcher(name);
     String lastName = nameAfterSpaceMatch.group(1);

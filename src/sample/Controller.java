@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Properties;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -65,7 +66,7 @@ public class Controller {
   private final String DB_URL = "jdbc:h2:./res/ProductionTables";
   //  Database credentials
   private final String USER = "";
-  private final String PASS = "";
+  private final String PASS = "dbpw";
   private Connection conn;
   private Statement stmt;
   /** An object of Product that used to create serial numbers */
