@@ -9,7 +9,7 @@ I made this program at Florida Gulf Coast University during the start of my seco
 
 ## Demonstration
 
-![Sample GIF](docs/octocat_github.gif) 
+![](ezgif.com-video-to-gif.gif) 
 
 ## Documentation
 
