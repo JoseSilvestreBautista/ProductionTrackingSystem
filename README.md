@@ -27,18 +27,12 @@ The markdown is  \!\[Alt text\]\(relative/path/to/img.png) <br />
 
 ## Getting Started
 
-Instructions to get a copy of the project up and running on someone's local machine for development and testing purposes.
-<br />
-Note for real project: You want to be able to share your project and enable collaboration. 
-<br />
-Note for school project: You want a potential client or hirer to be able to run your program. 
+Download an Idea such as Intellij. Make sure you have the Java 8 sdk and Java 8 jre.
+Download the zip file version of the repository. Unzip and open through Intellij.
 
 ## Built With
 
-* IDE used  
-* Other software used  
-* Resources used  
-<br />Note for school project: Every section is an opportunity to make an impression. You could briefly add what you know about the IDE and describe your development skills. 
+Sof
 
 ## Contributing
 
