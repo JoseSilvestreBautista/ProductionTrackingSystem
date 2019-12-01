@@ -1,6 +1,5 @@
 package sample;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -34,7 +33,7 @@ public class ProductionRecord {
   public ProductionRecord(Product productProduced, int count) {
     String intFormat = String.format("%010d", count);
     this.serialNum =
-        productProduced.manufacturer.substring(0, 3) + productProduced.type + intFormat;
+        productProduced.getManufacturer().substring(0, 3) + productProduced.getType() + intFormat;
   }
 
   public String printSerialNumber() {

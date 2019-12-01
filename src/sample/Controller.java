@@ -1,5 +1,7 @@
 package sample;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -8,6 +10,7 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Properties;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -24,9 +27,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-
-// username: jcena
-// password: @Jc
 
 /**
  * @author Jose Silvestre-Bautista
@@ -60,8 +60,9 @@ public class Controller {
   private final ObservableList<NewProduct> productLine = FXCollections.observableArrayList();
   /** Holds all the products in the database. */
   private final ArrayList<String> allProducts = new ArrayList<>();
-
+  /** The TextField where the user enters their full name. */
   @FXML private TextField EmployeeName;
+  /** The TextField where the user enters their password. */
   @FXML private PasswordField EmployeePassword;
   /** Database Connection */
   private final String JDBC_DRIVER = "org.h2.Driver";
@@ -69,13 +70,14 @@ public class Controller {
   private final String DB_URL = "jdbc:h2:./res/ProductionTables";
   //  Database credentials
   private final String USER = "";
-  private final String PASS = "dbpw";
+  private String PASS = "";
   private Connection conn;
   private Statement stmt;
   /** An object of Product that used to create serial numbers */
   private Product produceProduct;
 
   private String[] productInfoFromListView;
+
   /**
    * This method initializes text in TextFields named manufacturer and productName, ChoiceBox named
    * itemType, and Combobox named selectionChooseQuantity.
@@ -88,54 +90,17 @@ public class Controller {
     populateProductionLog();
   }
 
-  /**
-   * Fills the TextArea in the production log tab with serial numbers from the database. It is also
-   * capable of refreshing while the program runs.
-   */
-  private void populateProductionLog() {
-
-    ProductionLogTextArea.setText("Production Log :\n");
-    try {
-      // STEP 1: Register JDBC driver
-      Class.forName(JDBC_DRIVER);
-      // STEP 2: Open a connection
-      conn = DriverManager.getConnection(DB_URL, USER, PASS);
-      // STEP 3: Execute a query
-      stmt = conn.createStatement();
-      String sql =
-          "SELECT PRODUCTION_NUM, PRODUCT_ID,SERIAL_NUM, DATE_PRODUCED FROM PRODUCTIONRECORD";
-      ResultSet rs = stmt.executeQuery(sql);
-
-      while (rs.next()) {
-        int localProductionNum = Integer.parseInt(rs.getString(1));
-        int localProductId = Integer.parseInt(rs.getString(2));
-        String localSerialNum = rs.getString(3);
-        String localDateProduced = rs.getString(4);
-        ProductionRecord productionRecordToProductionLog =
-            new ProductionRecord(
-                localProductionNum, localProductId, localSerialNum, localDateProduced);
-        ProductionLogTextArea.appendText(productionRecordToProductionLog + "\n");
-      }
-      // STEP 4: Clean-up environment
-      stmt.close();
-      conn.close();
-    } catch (ClassNotFoundException | SQLException e) {
-      e.printStackTrace();
-    }
-  }
-
-  /** Sets the columns of the TableView to receive certain NewProduct fields. */
-  private void populateExistingProductsTableView() {
-    idColumn.setCellValueFactory(new PropertyValueFactory<>("product_ID"));
-    nameColumn.setCellValueFactory(new PropertyValueFactory<>("product_Name"));
-    manufacturerColumn.setCellValueFactory(new PropertyValueFactory<>("product_Manufacturer"));
-    typeColumn.setCellValueFactory(new PropertyValueFactory<>("product_Type"));
-    productLineTable.setItems(productLine);
-  }
-
   /** Populate the ComboBox that holds all possible item types for a product. */
   private void populateItemTypeChoiceBox() {
-    itemType.getItems().addAll("Audio", "Visual", "AudioMobile", "VisualMobile");
+    itemType
+        .getItems()
+        .addAll(
+            "Audio",
+            "Visual",
+            "AudioMobile",
+            "VisualMobile",
+            MonitorType.LCD.toString(),
+            MonitorType.LED.toString());
   }
 
   /** Populates the choice box in in produce with a set of positive integers. */
@@ -149,10 +114,33 @@ public class Controller {
   }
 
   /**
+   * This method receives the input from productName, manufacturer, and itemType then sets them
+   * equal to String variables. The string variables are used in SQL command to store user input
+   * into a database.
+   */
+  public void addProduct() {
+
+    Product produceProduct =
+        new Product(productName.getText(), manufacturer.getText(), itemType.getValue()) {};
+
+    DataBaseExecutions newProduct = new DataBaseExecutions(produceProduct);
+    loadProductsToProductLine();
+  }
+
+  /**
    * Loads all products in the database into the TableView. It also loads all possible products to
    * chose from in the ListView.
    */
   private void loadProductsToProductLine() {
+
+    Properties prop = new Properties();
+    try {
+      prop.load(new FileInputStream("res/properties"));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    PASS = prop.getProperty("password");
+
     try {
       // STEP 1: Register JDBC driver
       Class.forName(JDBC_DRIVER);
@@ -203,50 +191,57 @@ public class Controller {
   }
 
   /**
-   * This method receives the input from productName, manufacturer, and itemType then sets them
-   * equal to String variables. The string variables are used in SQL command to store user input
-   * into a database.
+   * Fills the TextArea in the production log tab with serial numbers from the database. It is also
+   * capable of refreshing while the program runs.
    */
-  public void addProduct() {
-    /*
-     inputFromProductName sets text from productName to a sting.
-     inputFromManufacturer sets text from manufacturer to a sting.
-     inputFromItemType sets text from itemType to a sting.
-    */
-    String inputFromProductName = productName.getText();
-    String inputFromManufacturer = manufacturer.getText();
-    String inputFromItemType = itemType.getValue();
+  private void populateProductionLog() {
 
-    // populate the Table view when the addProduct button is clicked
+    ProductionLogTextArea.setText("Production Log :\n");
+
+    Properties prop = new Properties();
+    try {
+      prop.load(new FileInputStream("res/properties"));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    PASS = prop.getProperty("password");
 
     try {
       // STEP 1: Register JDBC driver
       Class.forName(JDBC_DRIVER);
-
       // STEP 2: Open a connection
       conn = DriverManager.getConnection(DB_URL, USER, PASS);
-
       // STEP 3: Execute a query
       stmt = conn.createStatement();
-      // INSERT INTO Product(type, manufacturer, name) VALUES ( 'AUDIO', 'Apple', 'iPod' );
       String sql =
-          "INSERT INTO Product(type, manufacturer, name) VALUES ( ' "
-              + inputFromItemType
-              + " ', '"
-              + inputFromManufacturer
-              + "', '"
-              + inputFromProductName
-              + "')";
-      System.out.println(sql);
-      stmt.executeUpdate(sql);
+          "SELECT PRODUCTION_NUM, PRODUCT_ID,SERIAL_NUM, DATE_PRODUCED FROM PRODUCTIONRECORD";
+      ResultSet rs = stmt.executeQuery(sql);
 
+      while (rs.next()) {
+        int localProductionNum = Integer.parseInt(rs.getString(1));
+        int localProductId = Integer.parseInt(rs.getString(2));
+        String localSerialNum = rs.getString(3);
+        String localDateProduced = rs.getString(4);
+        ProductionRecord productionRecordToProductionLog =
+            new ProductionRecord(
+                localProductionNum, localProductId, localSerialNum, localDateProduced);
+        ProductionLogTextArea.appendText(productionRecordToProductionLog + "\n");
+      }
       // STEP 4: Clean-up environment
       stmt.close();
       conn.close();
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
     }
-    loadProductsToProductLine();
+  }
+
+  /** Sets the columns of the TableView to receive certain NewProduct fields. */
+  private void populateExistingProductsTableView() {
+    idColumn.setCellValueFactory(new PropertyValueFactory<>("product_ID"));
+    nameColumn.setCellValueFactory(new PropertyValueFactory<>("product_Name"));
+    manufacturerColumn.setCellValueFactory(new PropertyValueFactory<>("product_Manufacturer"));
+    typeColumn.setCellValueFactory(new PropertyValueFactory<>("product_Type"));
+    productLineTable.setItems(productLine);
   }
 
   /**
@@ -254,10 +249,14 @@ public class Controller {
    * item type. Then saves it into an array.
    */
   public void listViewProduct(MouseEvent mouseEvent) {
-    System.out.println(chooseProductListView.getSelectionModel().getSelectedItems());
+    Alert loginCredentials = new Alert(AlertType.WARNING);
+    loginCredentials.setTitle("Selection");
+    loginCredentials.setHeaderText("Improper Selection");
+    loginCredentials.setContentText("Select a non-empty row.");
 
     if (chooseProductListView.getSelectionModel().isEmpty()) {
-      initialize();
+      loginCredentials.show();
+
     } else {
 
       String infoFromListView =
@@ -270,31 +269,12 @@ public class Controller {
 
   /** Creates an object of Product and fills it. The object is used to make serial numbers. */
   private void createProductionObject() {
-    //    itemType.getItems().addAll("Audio", "Visual", "AudioMobile", "VisualMobile");
-    String twoLetterTypeCode = null;
-
-    switch (productInfoFromListView[2].trim()) {
-      case ("Audio"):
-        twoLetterTypeCode = "AU";
-        break;
-      case ("Visual"):
-        twoLetterTypeCode = "VI";
-        break;
-      case ("AudioMobile"):
-        twoLetterTypeCode = "AM";
-        break;
-      case ("VisualMobile"):
-        twoLetterTypeCode = "VM";
-        break;
-      default:
-        System.out.println("Something freaky happened in the loadProductionLog method.");
-    }
 
     produceProduct =
         new Product(
             productInfoFromListView[1].trim(),
             productInfoFromListView[3].replace("]", "").trim(),
-            twoLetterTypeCode) {};
+            productInfoFromListView[2].trim()) {};
   }
 
   /**
@@ -303,12 +283,25 @@ public class Controller {
    * the database.
    */
   public void recordProduction() {
-
     int localSerialNum = 0;
-    int prodId;
-    prodId = Integer.parseInt(productInfoFromListView[0].replace("[", "").trim());
+    int prodId = 0;
+    try {
+      prodId = Integer.parseInt(productInfoFromListView[0].replace("[", "").trim());
+    } catch (RuntimeException e) {
+      Alert SubmitError = new Alert(AlertType.ERROR);
+      SubmitError.setTitle("Submission Error");
+      SubmitError.setHeaderText("Submission Error");
+      SubmitError.setContentText("Select a non-empty row before submitting.");
+      SubmitError.show();
+    }
+    Properties prop = new Properties();
+    try {
+      prop.load(new FileInputStream("res/properties"));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    PASS = prop.getProperty("password");
 
-    //    System.out.println(prodId);
     try {
       Class.forName(JDBC_DRIVER);
       conn = DriverManager.getConnection(DB_URL, USER, PASS);
@@ -334,9 +327,19 @@ public class Controller {
       simplified =
           Integer.parseInt(
               String.valueOf(selectionChooseQuantity.getSelectionModel().getSelectedItem()));
+      if (simplified < 0) {
+        throw new NumberFormatException();
+      }
+    } catch (NumberFormatException e) {
+      Alert completionError = new Alert(AlertType.ERROR);
+      completionError.setHeaderText("Incorrect input for choose quantity.");
+      completionError.setContentText("Please enter an integer\n" + "ex. 1,2,3,...");
+      completionError.show();
     } catch (Exception e) {
-      initialize();
-      System.out.println("Enter a positive integer.");
+      Alert completionError = new Alert(AlertType.ERROR);
+      completionError.setHeaderText("Incorrect input for choose quantity.");
+      completionError.setContentText("Please enter an integer\n" + "ex. 1,2,3,...");
+      completionError.show();
     }
 
     for (int i = localSerialNum + 1; i <= simplified + localSerialNum; i++) {
@@ -367,7 +370,15 @@ public class Controller {
       } catch (ClassNotFoundException | SQLException e) {
         e.printStackTrace();
       }
+      Alert completion = new Alert(AlertType.INFORMATION);
     }
+    if (simplified > 0) {
+      Alert completion = new Alert(AlertType.INFORMATION);
+      completion.setHeaderText("Complete!");
+      completion.setContentText("Items Were Produced");
+      completion.show();
+    }
+
     populateProductionLog();
   }
 
@@ -380,6 +391,14 @@ public class Controller {
     loginCredentials.setHeaderText("Your Login Credentials");
     loginCredentials.setContentText(newEmployeesCredentials.toString());
     loginCredentials.show();
+
+    Properties prop = new Properties();
+    try {
+      prop.load(new FileInputStream("res/properties"));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    PASS = prop.getProperty("password");
 
     try {
       Class.forName(JDBC_DRIVER);
@@ -406,4 +425,20 @@ public class Controller {
       e.printStackTrace();
     }
   }
+
+  //   public ObservableList<Product> getProductLine() {
+  //    return productLine;
+  //  }
+  //
+  //  public void setProductLine(ObservableList<Product> productLine){
+  //    this.productLine = productLine;
+  //  }
+  //
+  //   public ListView getChooseProductListView() {
+  //    return chooseProductListView;
+  //  }
+  //
+  //  public void setChooseProductListView(ListView<String> chooseProductListView) {
+  //    this.chooseProductListView = chooseProductListView;
+  //  }
 }

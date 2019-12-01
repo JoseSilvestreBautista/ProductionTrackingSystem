@@ -33,7 +33,6 @@ public class AudioPlayer extends Product implements MultimediaControl {
         + mediaType;
   }
 
-  /** @return */
   @Override
   public int getId() {
     return 0;

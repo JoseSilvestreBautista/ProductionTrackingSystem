@@ -8,9 +8,9 @@ package sample;
 public abstract class Product implements Item {
 
   private int id;
-  final String type;
-  String manufacturer;
-  final String name;
+  private final String type;
+  private final String manufacturer;
+  private final String name;
 
   Product(String name, String manufacturer, String type) {
     this.name = name;
@@ -18,25 +18,29 @@ public abstract class Product implements Item {
     this.type = type;
   }
 
+  public void setId(int id) {
+    this.id = id;
+  }
+
   public int getId() {
     return id;
   }
 
+  @Override
   public void setName(String name) {}
 
   public String getName() {
     return name;
   }
 
-  public void setManufacturer(String manufacturer) {
-    this.manufacturer = manufacturer;
-  }
+  @Override
+  public void setManufacturer(String manufacturer) {}
 
   public String getManufacturer() {
     return manufacturer;
   }
 
-  public String toString() {
-    return "Name: " + name + "\n" + "Manufacturer: " + manufacturer + "\n" + "Type: " + type;
+  public String getType() {
+    return type;
   }
 }

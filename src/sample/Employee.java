@@ -9,9 +9,9 @@ import java.util.regex.Pattern;
  */
 public class Employee {
 
-  private String name;
+  private final String name;
   private String username;
-  private String password;
+  private final String password;
   private String email;
 
   /**
@@ -31,7 +31,7 @@ public class Employee {
       email = "user@oracleacademy.Test";
     }
 
-    if (isValidPassword(password) == true) {
+    if (isValidPassword(password)) {
       this.password = password;
     } else {
       this.password = "pw";
@@ -64,8 +64,7 @@ public class Employee {
   private boolean checkName(String name) {
     Pattern pattern = Pattern.compile("\\s");
     Matcher matcher = pattern.matcher(name);
-    boolean found = matcher.find();
-    return found;
+    return matcher.find();
   }
 
   /**
@@ -101,8 +100,7 @@ public class Employee {
     String regex = "^(?=.*[A-Z])+^(?!.*[^!a-zA-Z0-9@#$^+=])";
     Pattern pattern = Pattern.compile(regex);
     Matcher matcher = pattern.matcher(password);
-    boolean found = matcher.find();
-    return found;
+    return matcher.find();
   }
 
   /**
