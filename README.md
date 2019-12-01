@@ -13,6 +13,7 @@ I made this program at Florida Gulf Coast University during the start of my seco
 
 ## Documentation
 
+To view coding documentation please see the link below.
 
 [JavaDoc](https://josesilvestrebautista.github.io/ProductionTrackingSystem/)
 
