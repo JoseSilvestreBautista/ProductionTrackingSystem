@@ -50,16 +50,28 @@ Email: my email will go here.<br/>
 
 ## License
 
-Public repositories on GitHub are often used to share open source software. For your repository to truly be open source, you'll need to license it so that others are free to use, change, and distribute the software. https://help.github.com/articles/licensing-a-repository/ <br />
-You have the option to choose a license when you first create your repository. </br>
-If you need to create a license for an existing repository...
-1. Go to your repository.
-2. Click on "Create new file" Button.
-3. Type the file name as License.txt or License.md in the input box next to your repository name, a drop down button appears towards right side.
-4. Choose the type of license of your choice.
-5. Click "Commit new file" button at the bottom (Green button)
-Credit https://stackoverflow.com/questions/31639059/how-to-add-license-to-an-existing-github-project <br />
-To choose a license, see https://choosealicense.com/ 
+MIT License
+
+Copyright (c) 2019 Jose Silvestre-Bautista
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
 
 ## Acknowledgments
 
