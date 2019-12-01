@@ -1,4 +1,4 @@
-# Project Title
+# Production Tracking System
 
 
 This program tracks and produces audio and visual products. The products can be added to the line of products available to be made. Then from the product line, individual products can be chosen to be produced in mass quantities. During mass production, each product is also given a serial number. The program also has an add an employee account page. <br />
