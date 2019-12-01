@@ -8,19 +8,20 @@ I made this program for a school assignment.<br />
 I made this program at Florida Gulf Coast University during the start of my second year. <br /> 
 
 ## Demonstration
-
+This a demo of the current capabilities of the program as of November 25, 2019. <br /> 
 ![](ezgif.com-video-to-gif.gif) 
 
 ## Documentation
 
-To view coding documentation please see the link below.
+To view coding documentation please see the link below.  <br /> 
 
 [JavaDoc](https://josesilvestrebautista.github.io/ProductionTrackingSystem/)
 
 ## Diagrams
 
-Such as a class diagram. <br /> 
-The markdown is  \!\[Alt text\]\(relative/path/to/img.png) <br />
+These are all the classes in the program and there are some inheritance, classes that use the fields and methods of another class.  <br /> 
+
+
  ![Sample Image](https://github.com/JoseSilvestreBautista/ProductionTrackingSystem/blob/master/FinalDiagram-1.png)
 
 ## Getting Started
