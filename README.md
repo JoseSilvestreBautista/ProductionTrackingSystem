@@ -8,7 +8,7 @@ I made this program for a school assignment.<br />
 I made this program at Florida Gulf Coast University during the start of my second year. <br /> 
 
 ## Demonstration
-This a demo of the current capabilities of the program as of November 25, 2019. <br /> 
+This is a demo of the current capabilities of the program as of November 25, 2019. <br /> 
 ![](ezgif.com-video-to-gif.gif) 
 
 ## Documentation
